@@ -1,0 +1,77 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  Solutionpath: 'backend/HopeLearnBridge.sln'
+
+stages:
+- stage: BackendBuild
+  jobs:
+  - job: BuildBackend
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '8.0.303'
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: restore
+        projects: '$(Solutionpath)'
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: build
+        projects: '$(Solutionpath)'
+        arguments: '--configuration $(buildConfiguration) --no-restore'
+
+- stage: FrontendBuild
+  jobs:
+  - job: BuildFrontend
+    steps:
+    - task: UseNode@1
+      inputs:
+        version: '20.16.0'
+      displayName: 'Install Node.js'
+
+    - task: PowerShell@2
+      displayName: 'Install pnpm'
+      inputs:
+        targetType: 'inline'
+        script: |
+          corepack enable
+          corepack prepare pnpm@20.16.0 --activate
+          pnpm config set store-dir $(Pipeline.Workspace)/.pnpm-store
+
+    - task: PowerShell@2
+      displayName: 'Install frontend packages'
+      inputs:
+        targetType: 'inline'
+        script: |
+          pnpm install
+        workingDirectory: 'frontend'
+
+    - task: PowerShell@2
+      displayName: 'Linting'
+      inputs:
+        targetType: 'inline'
+        script: |
+          pnpm run lint
+        workingDirectory: 'frontend'
+
+    - task: PowerShell@2
+      displayName: 'Building frontend repo'
+      inputs:
+        targetType: 'inline'
+        script: |
+          pnpm run build
+        workingDirectory: 'frontend'

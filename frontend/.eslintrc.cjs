@@ -1,0 +1,31 @@
+module.exports = {
+  root: true,
+  env: { browser: true, es2020: true, node: true, jest: true },
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+  ],
+  ignorePatterns: ["dist", ".eslintrc.cjs"],
+  parser: "@typescript-eslint/parser",
+  plugins: [
+    "react",
+    "react-hooks",
+    "prettier",
+    "react-refresh",
+    "@typescript-eslint",
+  ],
+  rules: {
+    "no-undef": "error",
+    "react/react-in-jsx-scope": "off",
+    "no-unused-vars": "error",
+    "no-trailing-spaces": "error",
+    "no-console": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react-refresh/only-export-components": "error",
+    semi: ["error", "always"],
+    quotes: ["error", "single"],
+    "jsx-quotes": ["error", "prefer-double"],
+  },
+};

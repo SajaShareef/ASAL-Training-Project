@@ -1,0 +1,21 @@
+# Ignore build output
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore build and publish artifacts
+*.dll
+*.exe
+*.app
+*.map
+*.pdb
+*.cache
+*.log
+*.csproj.user
+*.csproj.DotSettings
+.vs/

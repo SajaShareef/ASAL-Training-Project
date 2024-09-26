@@ -1,0 +1,1 @@
+export const STUDENT_PAGE_TEST_ID = 'student_page';
